@@ -5,6 +5,7 @@ import authSlice from './slices/authSlice';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import storageSession from 'redux-persist/lib/storage/session';
+import thunk from 'redux-thunk';
 
 const persistConfig = {
 	key: 'root',
@@ -26,10 +27,7 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
 	reducer: persistedReducer,
-	middleware: (getDefaultMiddleware) =>
-		getDefaultMiddleware({
-			serializableCheck: false,
-		}),
+	middleware: [thunk],
 	devTools: process.env.NODE_ENV !== 'production',
 });
 
