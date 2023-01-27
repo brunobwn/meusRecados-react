@@ -4,15 +4,20 @@ import messagesSlice from './slices/messagesSlice';
 import authSlice from './slices/authSlice';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
+import storageSession from 'redux-persist/lib/storage/session';
 
 const persistConfig = {
 	key: 'root',
 	storage,
 	blacklist: ['auth'],
 };
+const authPersistConfig = {
+	key: 'auth',
+	storage: storageSession,
+};
 
 const rootReducer = combineReducers({
-	auth: authSlice,
+	auth: persistReducer(authPersistConfig, authSlice),
 	users: usersSlice,
 	messages: messagesSlice,
 });
@@ -21,6 +26,10 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
 	reducer: persistedReducer,
+	middleware: (getDefaultMiddleware) =>
+		getDefaultMiddleware({
+			serializableCheck: false,
+		}),
 	devTools: process.env.NODE_ENV !== 'production',
 });
 
