@@ -1,0 +1,37 @@
+import { createSlice } from '@reduxjs/toolkit';
+import type { PayloadAction } from '@reduxjs/toolkit';
+import type { RootState } from '../store';
+import { User } from '../../types/User';
+import { v4 as uuid } from 'uuid';
+
+// Define the initial state using that type
+const initialState: User[] = [
+	{
+		id: 'e43680df-e6ab-4509-92ac-3c9ca6a82613',
+		name: 'Brunão',
+		email: 'bruno@google.com',
+		password: '123',
+		avatar: 'http://seila.com/avatar.png',
+	},
+];
+
+export const usersSlice = createSlice({
+	name: 'users',
+	initialState,
+	reducers: {
+		adiciona: (state, action: PayloadAction<Omit<User, 'id'>>) => {
+			const newUser = { id: uuid(), ...action.payload };
+			state.push(newUser);
+		},
+		deleta: (state, action: PayloadAction<User>) => {
+			state.filter((user) => user.id !== action.payload.id);
+		},
+	},
+});
+
+export const { adiciona, deleta } = usersSlice.actions;
+
+// Other code such as selectors can use the imported `RootState` type
+export const selectUsers = (state: RootState) => state.users;
+
+export default usersSlice.reducer;
