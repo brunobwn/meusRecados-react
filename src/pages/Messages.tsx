@@ -9,6 +9,7 @@ import {
 import { v4 as uuid } from 'uuid';
 import { Message } from '../types/Message';
 import { RootState } from '../app/store';
+import { logout } from '../app/slices/authSlice';
 
 const Messages: React.FC = () => {
 	const auth = useAppSelector((store) => store.auth);
@@ -45,13 +46,13 @@ const Messages: React.FC = () => {
 	}
 
 	function handleClickEdit(id: string) {
-		setForm('edit');
 		setEditId(id);
 		const messageEdit = messages.find((message) => message.messageId === id);
 		if (messageEdit) {
 			setSubject(messageEdit.subject);
 			setText(messageEdit.text);
 		}
+		setForm('edit');
 	}
 
 	return (
@@ -111,17 +112,19 @@ const Messages: React.FC = () => {
 							position: 'absolute',
 							top: 0,
 							right: 0,
-							cursor: 'pointer',
 							width: 'fit-content',
 							display: 'flex',
 							gap: '2rem',
 						}}
 					>
-						<a onClick={() => dispatch(removeMessage(message.messageId))}>Deletar</a>
-						<a onClick={() => handleClickEdit(message.messageId)}>Editar</a>
+						<button onClick={() => dispatch(removeMessage(message.messageId))}>
+							Deletar
+						</button>
+						<button onClick={() => handleClickEdit(message.messageId)}>Editar</button>
 					</div>
 				</div>
 			))}
+			<button onClick={() => dispatch(logout())}>Logout</button>
 		</React.Fragment>
 	);
 };

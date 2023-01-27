@@ -24,7 +24,11 @@ export const authSlice = createSlice({
 			state.isAuthenticated = true;
 		},
 		logout: (state) => {
-			state = initialState;
+			state.isAuthenticated = false;
+			state.user.id = '';
+			state.user.name = '';
+			state.user.email = '';
+			state.user.avatar = '';
 		},
 	},
 });

@@ -43,9 +43,7 @@ export const messagesSlice = createSlice({
 			};
 		},
 		removeMessage: (state, { payload: messageId }) => {
-			console.log(messageId);
 			state = state.filter((message) => message.messageId !== messageId);
-			console.log(state);
 		},
 	},
 });

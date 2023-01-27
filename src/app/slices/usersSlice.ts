@@ -31,7 +31,7 @@ export const usersSlice = createSlice({
 			state.push(newUser);
 		},
 		deleta: (state, action: PayloadAction<User>) => {
-			state.filter((user) => user.id !== action.payload.id);
+			state = state.filter((user) => user.id !== action.payload.id);
 		},
 	},
 });
