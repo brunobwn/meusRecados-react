@@ -7,9 +7,16 @@ import { v4 as uuid } from 'uuid';
 // Define the initial state using that type
 const initialState: User[] = [
 	{
-		id: 'e43680df-e6ab-4509-92ac-3c9ca6a82613',
+		id: 'e43680df-e6ab-4509-92ac-3c9ca6a82613---',
 		name: 'Brunão',
 		email: 'bruno@google.com',
+		password: '123',
+		avatar: 'http://seila.com/avatar.png',
+	},
+	{
+		id: 'e43680df-e6ab-4509-92ac-3c9ca6a82613',
+		name: 'Brunão',
+		email: '123',
 		password: '123',
 		avatar: 'http://seila.com/avatar.png',
 	},

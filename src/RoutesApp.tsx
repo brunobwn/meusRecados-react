@@ -6,8 +6,8 @@ import Messages from './pages/Messages';
 const RoutesApp = () => {
 	return (
 		<Routes>
-			{/* <Route path="/" element={<Auth page={<Messages />} />} /> */}
-			<Route path="/" element={<Messages />} />
+			<Route path="/" element={<Auth page={<Messages />} />} />
+			{/* <Route path="/" element={<Messages />} /> */}
 			<Route path="/login" element={<Login />} />
 		</Routes>
 	);

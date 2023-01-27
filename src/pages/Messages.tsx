@@ -1,55 +1,127 @@
-import React, { FormEvent, useRef } from 'react';
+import React, { FormEvent, useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
-import { add, allMessages, selectMessages } from '../app/slices/messagesSlice';
+import {
+	addMessage,
+	removeMessage,
+	selectUserMessages,
+	updateMessage,
+} from '../app/slices/messagesSlice';
 import { v4 as uuid } from 'uuid';
 import { Message } from '../types/Message';
-import { serialize } from 'v8';
-import { log } from 'console';
+import { RootState } from '../app/store';
 
 const Messages: React.FC = () => {
-	const messages = selectMessages((state) => state.messages);
+	const auth = useAppSelector((store) => store.auth);
+	const messages = useAppSelector(selectUserMessages(auth.user.id));
 	const dispatch = useAppDispatch();
-	const subjectInput = useRef<HTMLInputElement>(null);
-	const textInput = useRef<HTMLInputElement>(null);
+	const [editId, setEditId] = useState('');
+	const [subject, setSubject] = useState('');
+	const [text, setText] = useState('');
+	const [form, setForm] = useState<'new' | 'edit' | null>(null);
+	// const messageById = useAppSelector(selectById());
 
-	function handleSubmit(event: FormEvent) {
+	function clearInputs() {
+		setText('');
+		setSubject('');
+	}
+
+	function handleSubmitNew(event: FormEvent) {
 		event.preventDefault();
-		const subject = subjectInput.current?.value ?? '';
-		const text = textInput.current?.value ?? '';
 		if (!subject || !text) {
 			alert('todos os campos devem ser preenchidos');
+			return;
 		}
-		const message: Message = {
-			messageId: uuid(),
-			userId: 'e43680df-e6ab-4509-92ac-3c9ca6a82613',
-			subject,
-			text,
-			// createdAt: new Date().toString(),
-			// editedAt: null,
-		};
-		dispatch(add(message));
+		dispatch(addMessage({ userId: auth.user.id, subject, text }));
+		setForm(null);
+		clearInputs();
 	}
+
+	function handleSubmitEdit(event: FormEvent) {
+		event.preventDefault();
+		if (!subject || !text || !editId) {
+			alert('todos os campos devem ser preenchidos');
+		}
+		dispatch(updateMessage({ messageId: editId, text, subject }));
+	}
+
+	function handleClickEdit(id: string) {
+		setForm('edit');
+		setEditId(id);
+		const messageEdit = messages.find((message) => message.messageId === id);
+		if (messageEdit) {
+			setSubject(messageEdit.subject);
+			setText(messageEdit.text);
+		}
+	}
+
 	return (
 		<React.Fragment>
-			<form onSubmit={handleSubmit}>
-				<input type="text" name="subject" placeholder="Titulo" ref={subjectInput} />
-				<input
-					type="text"
-					name="text"
-					id="text"
-					placeholder="Mensagem"
-					ref={textInput}
-				/>
-				<button type="submit">Enviar</button>
-			</form>
-			<h1>Mensagens</h1>
-			{/* {selectMessages.((message) => (
-				<>
+			{form === 'new' ? (
+				<form onSubmit={handleSubmitNew}>
+					<h3>Novo recado</h3>
+					<input
+						type="text"
+						name="subject"
+						placeholder="Titulo"
+						value={subject}
+						onChange={(e) => setSubject(e.target.value)}
+					/>
+					<input
+						type="text"
+						name="text"
+						id="text"
+						placeholder="Mensagem"
+						value={text}
+						onChange={(e) => setText(e.target.value)}
+					/>
+					<button type="submit">Enviar</button>
+				</form>
+			) : form === 'edit' ? (
+				<form onSubmit={handleSubmitEdit}>
+					<h3>Editar recado</h3>
+					<input
+						type="text"
+						name="subject"
+						placeholder="Titulo"
+						value={subject}
+						onChange={(e) => setSubject(e.target.value)}
+					/>
+					<input
+						type="text"
+						name="text"
+						id="text"
+						placeholder="Mensagem"
+						value={text}
+						onChange={(e) => setText(e.target.value)}
+					/>
+					<button type="submit">Enviar</button>
+				</form>
+			) : null}
+
+			<h1>
+				Mensagens <button onClick={() => setForm('new')}>Cadastrar nova</button>
+			</h1>
+			{messages.map((message) => (
+				<div key={message.messageId} style={{ position: 'relative' }}>
 					<h4>{message.subject}</h4>
 					<p>{message.text}</p>
 					<hr />
-				</>
-			))} */}
+					<div
+						style={{
+							position: 'absolute',
+							top: 0,
+							right: 0,
+							cursor: 'pointer',
+							width: 'fit-content',
+							display: 'flex',
+							gap: '2rem',
+						}}
+					>
+						<a onClick={() => dispatch(removeMessage(message.messageId))}>Deletar</a>
+						<a onClick={() => handleClickEdit(message.messageId)}>Editar</a>
+					</div>
+				</div>
+			))}
 		</React.Fragment>
 	);
 };

@@ -3,6 +3,6 @@ export type Message = {
 	userId: string;
 	subject: string;
 	text: string;
-	// createdAt: string;
-	// editedAt: string | null;
+	createdAt: string;
+	editedAt: string | undefined;
 };

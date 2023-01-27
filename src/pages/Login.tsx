@@ -1,4 +1,5 @@
 import React, { FormEvent, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { signIn } from '../app/slices/authSlice';
 
@@ -6,16 +7,18 @@ const Login: React.FC = () => {
 	const dispatch = useAppDispatch();
 	const emailInput = useRef<HTMLInputElement>(null);
 	const passwordInput = useRef<HTMLInputElement>(null);
+	const users = useAppSelector((state) => state.users);
+	const navigate = useNavigate();
 
 	function handleSubmit(event: FormEvent) {
 		event.preventDefault();
 
-		const users = useAppSelector((state) => state.users);
 		const user = users.find((user) => user.email === emailInput.current?.value);
 		if (user) {
 			if (user.password === passwordInput.current?.value) {
 				const { password, ...authUser } = user;
 				dispatch(signIn(authUser));
+				navigate('/');
 			} else {
 				alert('senha errada');
 			}
