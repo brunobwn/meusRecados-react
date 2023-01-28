@@ -1,7 +1,7 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import usersSlice from './slices/usersSlice';
-import messagesSlice from './slices/messagesSlice';
-import authSlice from './slices/authSlice';
+import usersSlice from './reducers/usersSlice';
+import messagesSlice from './reducers/messagesSlice';
+import authSlice from './reducers/authSlice';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import storageSession from 'redux-persist/lib/storage/session';

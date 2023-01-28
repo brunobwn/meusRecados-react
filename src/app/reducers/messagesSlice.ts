@@ -2,6 +2,7 @@ import { createSelector, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../store';
 import { Message } from '../../types/Message';
 import { v4 as uuid } from 'uuid';
+import { log } from 'console';
 
 // Define the initial state using that type
 const initialState: Message[] = [
@@ -43,7 +44,8 @@ export const messagesSlice = createSlice({
 			};
 		},
 		removeMessage: (state, { payload: messageId }) => {
-			state = state.filter((message) => message.messageId !== messageId);
+			const index = state.map((m) => m.messageId).indexOf(messageId);
+			state.splice(index, 1);
 		},
 	},
 });

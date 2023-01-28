@@ -26,17 +26,17 @@ export const usersSlice = createSlice({
 	name: 'users',
 	initialState,
 	reducers: {
-		adiciona: (state, action: PayloadAction<Omit<User, 'id'>>) => {
+		addUser: (state, action: PayloadAction<Omit<User, 'id'>>) => {
 			const newUser = { id: uuid(), ...action.payload };
 			state.push(newUser);
 		},
-		deleta: (state, action: PayloadAction<User>) => {
+		removeUser: (state, action: PayloadAction<User>) => {
 			state = state.filter((user) => user.id !== action.payload.id);
 		},
 	},
 });
 
-export const { adiciona, deleta } = usersSlice.actions;
+export const { addUser, removeUser } = usersSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectUsers = (state: RootState) => state.users;

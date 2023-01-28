@@ -1,7 +1,7 @@
 import React, { FormEvent, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
-import { signIn } from '../app/slices/authSlice';
+import { signIn } from '../app/reducers/authSlice';
 
 const Login: React.FC = () => {
 	const dispatch = useAppDispatch();
@@ -46,6 +46,7 @@ const Login: React.FC = () => {
 				/>
 				<button type="submit">Entrar</button>
 			</form>
+			<Link to="/signup">Cadastrar</Link>
 		</React.Fragment>
 	);
 };

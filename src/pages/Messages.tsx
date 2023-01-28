@@ -5,11 +5,11 @@ import {
 	removeMessage,
 	selectUserMessages,
 	updateMessage,
-} from '../app/slices/messagesSlice';
+} from '../app/reducers/messagesSlice';
 import { v4 as uuid } from 'uuid';
 import { Message } from '../types/Message';
 import { RootState } from '../app/store';
-import { logout } from '../app/slices/authSlice';
+import { logout } from '../app/reducers/authSlice';
 
 const Messages: React.FC = () => {
 	const auth = useAppSelector((store) => store.auth);
