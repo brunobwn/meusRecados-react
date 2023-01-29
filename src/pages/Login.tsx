@@ -7,28 +7,33 @@ import {
 	TextField,
 	Typography,
 } from '@mui/material';
-import React, { FormEvent, useRef } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { signIn } from '../app/reducers/authSlice';
 import { Theme, ThemeProvider, useTheme } from '@mui/material/styles';
 import { fontSolitreo } from '../themes/themes';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { LoginSchema, TLoginSchema } from '../types/Login';
 
 const Login: React.FC = () => {
 	const dispatch = useAppDispatch();
-	const emailInput = useRef<HTMLInputElement>(null);
-	const passwordInput = useRef<HTMLInputElement>(null);
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm<TLoginSchema>({
+		resolver: zodResolver(LoginSchema),
+	});
 	const users = useAppSelector((state) => state.users);
 	const navigate = useNavigate();
 
 	const theme = useTheme();
 
-	function handleSubmit(event: FormEvent) {
-		event.preventDefault();
-
-		const user = users.find((user) => user.email === emailInput.current?.value);
+	function handleLogin({ email, password }: TLoginSchema) {
+		const user = users.find((user) => user.email === email);
 		if (user) {
-			if (user.password === passwordInput.current?.value) {
+			if (user.password === password) {
 				const { password, ...authUser } = user;
 				dispatch(signIn(authUser));
 				navigate('/');
@@ -52,40 +57,37 @@ const Login: React.FC = () => {
 						</Typography>
 					</ThemeProvider>
 				</Box>
-				<form onSubmit={handleSubmit}>
-					<Stack gap={2} sx={{ paddingX: 3 }}>
+				<form onSubmit={handleSubmit(handleLogin)}>
+					<Stack gap={3} sx={{ paddingX: 3 }}>
 						<TextField
 							type="text"
-							id="email"
 							label="E-mail"
-							variant="standard"
-							inputRef={emailInput}
+							variant="outlined"
 							color="secondary"
+							error={!!errors.email}
+							helperText={errors.email?.message}
+							{...register('email', { required: true })}
 						/>
 						<TextField
 							type="password"
-							id="password"
 							label="Senha"
-							variant="standard"
+							variant="outlined"
 							color="secondary"
-							inputRef={passwordInput}
+							error={!!errors.password}
+							helperText={errors.password?.message}
+							{...register('password', { required: true, minLength: 5 })}
 						/>
-						<Button
-							color="primary"
-							variant="contained"
-							type="submit"
-							size="large"
-							sx={{ marginTop: 2 }}
-						>
+						<Button color="primary" variant="contained" type="submit" size="large">
 							Entrar
 						</Button>
-						<Typography variant="body2" mt={1}>
+						<Typography variant="body2" align="center">
 							Ainda não é cadastrado?{' '}
 							<Link
 								variant="body1"
 								component={RouterLink}
 								to="/signup"
 								ml={1}
+								fontWeight={500}
 								underline="hover"
 							>
 								Criar conta
@@ -120,7 +122,7 @@ const HeaderFormCss = {
 	borderRadius: 2,
 	padding: 2,
 	marginTop: -6,
-	marginBottom: 3,
+	marginBottom: 4,
 	background: (theme: Theme) => theme.palette.primary.main,
 	color: 'white',
 	boxShadow: 2,
