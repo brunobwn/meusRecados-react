@@ -3,7 +3,7 @@ import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { signIn } from '../app/reducers/authSlice';
 import { Theme, ThemeProvider } from '@mui/material/styles';
-import { fontSolitreo } from '../themes/themes';
+import { fontSecularOne } from '../themes/themes';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { LoginSchema, TLoginSchema } from '../types/Login';
@@ -46,7 +46,7 @@ const Login: React.FC = () => {
 				exit={{ y: 1000, opacity: 0 }}
 			>
 				<Box sx={HeaderFormCss}>
-					<ThemeProvider theme={fontSolitreo}>
+					<ThemeProvider theme={fontSecularOne}>
 						<Typography variant="h5" align="center">
 							meus
 							<Typography component="span" variant="h4" fontWeight="400">
@@ -75,7 +75,7 @@ const Login: React.FC = () => {
 							helperText={errors.password?.message}
 							{...register('password')}
 						/>
-						<Button color="primary" variant="contained" type="submit" size="large">
+						<Button color="secondary" variant="contained" type="submit" size="large">
 							Entrar
 						</Button>
 						<Typography variant="body2" align="center">
@@ -104,10 +104,10 @@ const BoxWrapperCss = {
 	display: 'grid',
 	placeItems: 'center',
 	minHeight: '100vh',
-	background:
-		"url('https://images.unsplash.com/photo-1442422502730-a90f72460717?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8cml2ZXJ8fHx8fHwxNjc0OTM5MjAw&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080')",
-	backgroundSize: 'cover',
-	overflow: 'hidden',
+	marginX: 1,
+	// background:
+	// 	"url('https://images.unsplash.com/photo-1442422502730-a90f72460717?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8cml2ZXJ8fHx8fHwxNjc0OTM5MjAw&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080')",
+	// backgroundSize: 'cover',
 };
 
 const ContainerFormCss = {
