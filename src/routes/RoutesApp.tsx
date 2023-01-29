@@ -1,9 +1,9 @@
 import { AnimatePresence } from 'framer-motion';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import Auth from '../Auth';
-import Login from '../pages/Login';
+import Login from '../pages/public/Login';
 import Messages from '../pages/Messages';
-import SignUp from '../pages/SignUp';
+import SignUp from '../pages/public/SignUp';
 
 const RoutesApp = () => {
 	const location = useLocation();

@@ -8,6 +8,7 @@ const gStyle = (theme: Theme) => ({
 		minHeight: '100vh',
 		overflow: 'hidden',
 		background: 'linear-gradient(to top left, #31475E, #222932)',
+		backgroundColor: '#222932',
 	},
 });
 
