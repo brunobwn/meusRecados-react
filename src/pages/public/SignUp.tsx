@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import {
 	Box,
 	Button,
+	CircularProgress,
 	Link,
 	Stack,
 	TextField,
@@ -22,7 +23,7 @@ const SignUp: React.FC = () => {
 	const {
 		register,
 		handleSubmit,
-		formState: { errors },
+		formState: { errors, isSubmitting },
 	} = useForm<TSignUpSchema>({
 		resolver: zodResolver(SignUpSchema),
 	});
@@ -69,6 +70,8 @@ const SignUp: React.FC = () => {
 						<TextField
 							type="text"
 							label="Nome"
+							variant="outlined"
+							color="secondary"
 							error={!!errors.name}
 							helperText={errors.name?.message}
 							{...register('name')}
@@ -109,8 +112,18 @@ const SignUp: React.FC = () => {
 							helperText={errors.passwordConfirm?.message}
 							{...register('passwordConfirm')}
 						/>
-						<Button color="secondary" variant="contained" type="submit" size="large">
-							Cadastrar
+						<Button
+							color="secondary"
+							variant="contained"
+							type="submit"
+							size="large"
+							disabled={isSubmitting}
+						>
+							{isSubmitting ? (
+								<CircularProgress thickness={3} size="1.6rem" />
+							) : (
+								'Cadastrar'
+							)}
 						</Button>
 						<Typography variant="body2" align="center">
 							Já tem conta?{' '}

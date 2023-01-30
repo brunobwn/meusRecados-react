@@ -1,4 +1,12 @@
-import { Box, Button, Link, Stack, TextField, Typography } from '@mui/material';
+import {
+	Box,
+	Button,
+	CircularProgress,
+	Link,
+	Stack,
+	TextField,
+	Typography,
+} from '@mui/material';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { signIn } from '../../app/reducers/authSlice';
@@ -15,14 +23,14 @@ const Login: React.FC = () => {
 	const {
 		register,
 		handleSubmit,
-		formState: { errors },
+		formState: { errors, isSubmitting },
 	} = useForm<TLoginSchema>({
 		resolver: zodResolver(LoginSchema),
 	});
 	const users = useAppSelector((state) => state.users);
 	const navigate = useNavigate();
 
-	function handleLogin({ email, password }: TLoginSchema) {
+	async function handleLogin({ email, password }: TLoginSchema) {
 		const user = users.find((user) => user.email === email);
 		if (user) {
 			if (user.password === password) {
@@ -65,7 +73,7 @@ const Login: React.FC = () => {
 							color="secondary"
 							error={!!errors.email}
 							helperText={errors.email?.message}
-							{...register('email')}
+							{...register('email', { required: true })}
 						/>
 						<TextField
 							type="password"
@@ -76,8 +84,18 @@ const Login: React.FC = () => {
 							helperText={errors.password?.message}
 							{...register('password')}
 						/>
-						<Button color="secondary" variant="contained" type="submit" size="large">
-							Entrar
+						<Button
+							color="secondary"
+							variant="contained"
+							type="submit"
+							size="large"
+							disabled={isSubmitting}
+						>
+							{isSubmitting ? (
+								<CircularProgress thickness={3} size="1.6rem" />
+							) : (
+								'Entrar'
+							)}
 						</Button>
 						<Typography variant="body2" align="center">
 							Ainda não é cadastrado?{' '}
