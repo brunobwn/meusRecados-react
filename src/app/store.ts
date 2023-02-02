@@ -4,21 +4,15 @@ import messagesSlice from './reducers/messagesSlice';
 import authSlice from './reducers/authSlice';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
-import storageSession from 'redux-persist/lib/storage/session';
 import thunk from 'redux-thunk';
 
 const persistConfig = {
 	key: 'root',
 	storage,
-	blacklist: ['auth'],
-};
-const authPersistConfig = {
-	key: 'auth',
-	storage: storageSession,
 };
 
 const rootReducer = combineReducers({
-	auth: persistReducer(authPersistConfig, authSlice),
+	auth: authSlice,
 	users: usersSlice,
 	messages: messagesSlice,
 });
