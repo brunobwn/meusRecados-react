@@ -6,10 +6,6 @@ import {
 	selectUserMessages,
 	updateMessage,
 } from '../app/reducers/messagesSlice';
-import { v4 as uuid } from 'uuid';
-import { Message } from '../types/Message';
-import { RootState } from '../app/store';
-import { logout } from '../app/reducers/authSlice';
 
 const Messages: React.FC = () => {
 	const auth = useAppSelector((store) => store.auth);
@@ -124,7 +120,6 @@ const Messages: React.FC = () => {
 					</div>
 				</div>
 			))}
-			<button onClick={() => dispatch(logout())}>Logout</button>
 		</React.Fragment>
 	);
 };

@@ -5,6 +5,7 @@ import Login from '../pages/public/Login';
 import Messages from '../pages/Messages';
 import SignUp from '../pages/public/SignUp';
 import AppLayout from '../layouts/AppLayout';
+import Error404 from '../pages/errors/404';
 
 const RoutesApp = () => {
 	const location = useLocation();
@@ -14,12 +15,10 @@ const RoutesApp = () => {
 			<Routes key={location.pathname} location={location}>
 				<Route path="/login" element={<Login />} />
 				<Route path="/signup" element={<SignUp />} />
+				<Route element={<AppLayout />}>
+					<Route index path="/" element={<Auth page={<Messages />} />} />
+				</Route>
 			</Routes>
-			<AppLayout>
-				<Routes>
-					<Route path="/" element={<Auth page={<Messages />} />} />
-				</Routes>
-			</AppLayout>
 		</AnimatePresence>
 	);
 };
