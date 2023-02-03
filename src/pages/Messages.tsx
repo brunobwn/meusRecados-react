@@ -1,4 +1,19 @@
-import React, { FormEvent, useRef, useState } from 'react';
+import {
+	Box,
+	Button,
+	Container,
+	FormControl,
+	Grid,
+	IconButton,
+	InputAdornment,
+	InputLabel,
+	MenuItem,
+	Select,
+	Stack,
+	TextField,
+	Typography,
+} from '@mui/material';
+import React, { FormEvent, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import {
 	addMessage,
@@ -6,6 +21,8 @@ import {
 	selectUserMessages,
 	updateMessage,
 } from '../app/reducers/messagesSlice';
+import SearchIcon from '@mui/icons-material/Search';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 
 const Messages: React.FC = () => {
 	const auth = useAppSelector((store) => store.auth);
@@ -15,7 +32,6 @@ const Messages: React.FC = () => {
 	const [subject, setSubject] = useState('');
 	const [text, setText] = useState('');
 	const [form, setForm] = useState<'new' | 'edit' | null>(null);
-	// const messageById = useAppSelector(selectById());
 
 	function clearInputs() {
 		setText('');
@@ -51,8 +67,9 @@ const Messages: React.FC = () => {
 		setForm('edit');
 	}
 
+	function handleSearch() {}
 	return (
-		<React.Fragment>
+		<Container>
 			{form === 'new' ? (
 				<form onSubmit={handleSubmitNew}>
 					<h3>Novo recado</h3>
@@ -95,10 +112,75 @@ const Messages: React.FC = () => {
 				</form>
 			) : null}
 
-			<h1>
-				Mensagens <button onClick={() => setForm('new')}>Cadastrar nova</button>
-			</h1>
-			{messages.map((message) => (
+			<Typography variant="h4" color="white" mt={2}>
+				Mensagens{' '}
+				<Button
+					variant="contained"
+					color="success"
+					onClick={() => setForm('new')}
+					sx={{ ml: 'auto' }}
+				>
+					Cadastrar nova
+				</Button>
+			</Typography>
+			<Stack
+				direction={{ sm: 'column', md: 'row' }}
+				gap={2}
+				sx={{ backgroundColor: 'white', borderRadius: 2, p: 2, mt: 2 }}
+			>
+				<TextField
+					color="secondary"
+					size="small"
+					label="Buscar nos recados"
+					id="searchStringMessage"
+					focused
+					InputProps={{
+						endAdornment: (
+							<InputAdornment position="end">
+								<SearchIcon />
+							</InputAdornment>
+						),
+					}}
+					sx={{ flexGrow: 1 }}
+				/>
+				<TextField
+					type="date"
+					color="secondary"
+					size="small"
+					label="Até a data"
+					id="searchDateMessage"
+					focused
+				/>
+				<FormControl color="secondary" sx={{ minWidth: ['100%', 200] }} focused>
+					<InputLabel id="searchStatusMessage-label">Status</InputLabel>
+					<Select
+						labelId="searchStatusMessage-label"
+						id="searchStatusMessage"
+						value={10}
+						label="Status"
+						color="secondary"
+						size="small"
+					>
+						<MenuItem value={10}>Todos</MenuItem>
+						<MenuItem value={20}>Completado</MenuItem>
+						<MenuItem value={30}>Em andamento</MenuItem>
+					</Select>
+				</FormControl>
+				<Button color="secondary" variant="contained" sx={{ flexGrow: 0.5 }}>
+					Buscar
+				</Button>
+			</Stack>
+			<Box>
+				<Grid container mt={2} spacing={2} direction="row-reverse">
+					{messages.map((message) => (
+						<Grid item xs={12} sm={6} md={4} lg={3}>
+							{message.subject}
+						</Grid>
+					))}
+				</Grid>
+			</Box>
+
+			{/* {messages.map((message) => (
 				<div key={message.messageId} style={{ position: 'relative' }}>
 					<h4>{message.subject}</h4>
 					<p>{message.text}</p>
@@ -119,8 +201,8 @@ const Messages: React.FC = () => {
 						<button onClick={() => handleClickEdit(message.messageId)}>Editar</button>
 					</div>
 				</div>
-			))}
-		</React.Fragment>
+			))} */}
+		</Container>
 	);
 };
 
