@@ -32,7 +32,6 @@ export default function MenuAppBar({ toggleDrawer }: MenuAppBarProps) {
 	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 	const dispatch = useAppDispatch();
 	const auth = useAppSelector((state: RootState) => state.auth);
-	const theme = useTheme();
 
 	const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
 		setAnchorEl(event.currentTarget);
@@ -85,7 +84,7 @@ export default function MenuAppBar({ toggleDrawer }: MenuAppBarProps) {
 						id="menu-appbar"
 						anchorEl={anchorEl}
 						anchorOrigin={{
-							vertical: 'top',
+							vertical: 'bottom',
 							horizontal: 'right',
 						}}
 						keepMounted
