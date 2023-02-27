@@ -109,7 +109,11 @@ const NewMessageCard: React.FC = () => {
 		</Box>
 	) : (
 		<Box sx={newContentCardCSS} onClick={handleCardClick}>
-			<AddCircleOutlineIcon color="success" fontSize="large" />
+			<AddCircleOutlineIcon
+				color="success"
+				fontSize="large"
+				sx={{ transition: 'all 300ms ease' }}
+			/>
 		</Box>
 	);
 };

@@ -20,4 +20,11 @@ export const newContentCardCSS = {
 	display: 'grid',
 	placeItems: 'center',
 	cursor: 'pointer',
+	'&:hover': {
+		borderColor: 'rgba(255,255,255,0.8)',
+		'& svg': {
+			transform: 'scale(1.2)',
+		},
+	},
+	transition: 'all ease 300ms',
 };
