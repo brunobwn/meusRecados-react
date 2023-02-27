@@ -3,6 +3,7 @@ export type Message = {
 	userId: string;
 	subject: string;
 	text: string;
-	createdAt: string;
-	editedAt: string | undefined;
+	date: Date;
 };
+
+export type EditedMessage = Omit<Message, 'userId'>;

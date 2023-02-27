@@ -10,7 +10,7 @@ import {
 import { styled, Theme, CSSObject, useTheme } from '@mui/material/styles';
 import { HomeOutlined } from '@mui/icons-material';
 import CreateIcon from '@mui/icons-material/Create';
-import { DrawerHeader, drawerWidth } from '../layouts/AppLayout';
+import { DrawerHeader, drawerWidth } from '../../layouts/AppLayout';
 
 const data = [
 	{

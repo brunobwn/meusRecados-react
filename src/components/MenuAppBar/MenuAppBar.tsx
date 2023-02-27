@@ -11,10 +11,10 @@ import {
 import MuiAppBar, { AppBarProps } from '@mui/material/AppBar';
 import MenuIcon from '@mui/icons-material/Menu';
 import { styled, Theme, ThemeProvider, useTheme } from '@mui/material/styles';
-import { useAppDispatch, useAppSelector } from '../app/hooks';
-import { logout } from '../app/reducers/authSlice';
-import { fontSecularOne } from '../themes/themes';
-import { RootState } from '../app/store';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { logout } from '../../app/reducers/authSlice';
+import { fontSecularOne } from '../../themes/themes';
+import { RootState } from '../../app/store';
 
 interface MenuAppBarProps {
 	toggleDrawer: () => void;

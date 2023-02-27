@@ -2,8 +2,8 @@ import { styled } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import DrawerMenu from '../components/DrawerMenu';
-import MenuAppBar from '../components/MenuAppBar';
+import DrawerMenu from '../components/DrawerMenu/DrawerMenu';
+import MenuAppBar from '../components/MenuAppBar/MenuAppBar';
 
 export const drawerWidth = 200;
 
