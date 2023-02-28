@@ -1,3 +1,5 @@
+import { Theme } from '@mui/material';
+
 export const BoxWrapperCss = {
 	display: 'grid',
 	placeItems: 'center',
