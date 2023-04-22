@@ -7,10 +7,9 @@ interface AuthProps {
 }
 
 const Auth: React.FC<AuthProps> = ({ page }) => {
-	// TODO: Verifica se user esta logado, se sim renderiza componente, se nao redireciona para login
-	const { user, isAuthenticated } = useAppSelector((state) => state.auth);
+	const { user, token } = useAppSelector((state) => state.auth);
 
-	if (!isAuthenticated) {
+	if (!user && !token) {
 		return <Navigate to="/login" />;
 	}
 
