@@ -19,6 +19,14 @@ class ApiService {
     async register(name:string, email:string, password: string, avatar?:string): Promise<AxiosResponse>{
         return this.axiosInstance.post('auth/register', {name, email, password, avatar});
     }
+
+    setToken(token: string): void {
+        this.axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    }
+
+    resetToken(): void {
+        this.axiosInstance.defaults.headers.common['Authorization'] = '';
+    }
 }
 
 const api = new ApiService();
