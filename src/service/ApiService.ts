@@ -20,6 +20,10 @@ class ApiService {
         return this.axiosInstance.post('auth/register', {name, email, password, avatar});
     }
 
+    async getAllMessages(userId:string): Promise<AxiosResponse>{
+        return this.axiosInstance.get(`user/${userId}/messages`);
+    }
+
     setToken(token: string): void {
         this.axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     }
