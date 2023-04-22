@@ -29,7 +29,7 @@ const AppLayout: React.FC = () => {
 
 	return (
 		<Box sx={{ display: 'flex' }}>
-			<MenuAppBar toggleDrawer={toggleDrawer} />
+			{/* <MenuAppBar toggleDrawer={toggleDrawer} /> */}
 			<DrawerMenu isOpen={isDrawerOpen} closeDrawer={handleDrawerClose} />
 			<Box component="main" sx={{ flexGrow: 1, px: 3, pb: 3 }}>
 				<DrawerHeader />

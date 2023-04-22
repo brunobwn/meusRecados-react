@@ -12,7 +12,6 @@ import MuiAppBar, { AppBarProps } from '@mui/material/AppBar';
 import MenuIcon from '@mui/icons-material/Menu';
 import { styled, Theme, ThemeProvider, useTheme } from '@mui/material/styles';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { logout } from '../../app/reducers/authSlice';
 import { fontSecularOne } from '../../themes/themes';
 import { RootState } from '../../app/store';
 
@@ -40,7 +39,6 @@ export default function MenuAppBar({ toggleDrawer }: MenuAppBarProps) {
 	const handleClose = () => {
 		setAnchorEl(null);
 	};
-
 	return (
 		<AppBar position="fixed">
 			<Toolbar>
@@ -73,9 +71,9 @@ export default function MenuAppBar({ toggleDrawer }: MenuAppBarProps) {
 						color="inherit"
 						sx={{ borderRadius: 4 }}
 					>
-						<Typography mr={2}>{auth.user.name}</Typography>
+						<Typography mr={2}>{auth.user?.name}</Typography>
 						<Avatar
-							alt={auth.user.name}
+							alt={auth.user?.name}
 							src={auth.user?.avatar}
 							sx={{ border: 2, borderColor: (theme) => theme.palette.primary.dark }}
 						/>
@@ -96,7 +94,7 @@ export default function MenuAppBar({ toggleDrawer }: MenuAppBarProps) {
 						onClose={handleClose}
 					>
 						<MenuItem onClick={handleClose}>Minha conta</MenuItem>
-						<MenuItem onClick={() => dispatch(logout())}>Logout</MenuItem>
+						{/* <MenuItem onClick={() => dispatch(logout())}>Logout</MenuItem> */}
 					</Menu>
 				</div>
 			</Toolbar>

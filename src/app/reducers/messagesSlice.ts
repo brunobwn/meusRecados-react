@@ -6,20 +6,20 @@ import { v4 as uuid } from 'uuid';
 
 // Define the initial state using that type
 const initialState: Message[] = [
-	{
-		messageId: uuid(),
-		userId: 'e43680df-e6ab-4509-92ac-3c9ca6a82613',
-		subject: 'Teste',
-		text: 'Mensagem teste',
-		date: new Date(),
-	},
-	{
-		messageId: uuid(),
-		userId: 'e43680df-e6ab-4509-92ac-3c9ca6a82613',
-		subject: 'Teste 2',
-		text: 'Mensagem teste 2',
-		date: new Date(),
-	},
+	// {
+	// 	messageId: uuid(),
+	// 	userId: 'e43680df-e6ab-4509-92ac-3c9ca6a82613',
+	// 	subject: 'Teste',
+	// 	text: 'Mensagem teste',
+	// 	date: new Date(),
+	// },
+	// {
+	// 	messageId: uuid(),
+	// 	userId: 'e43680df-e6ab-4509-92ac-3c9ca6a82613',
+	// 	subject: 'Teste 2',
+	// 	text: 'Mensagem teste 2',
+	// 	date: new Date(),
+	// },
 ];
 
 export const messagesSlice = createSlice({

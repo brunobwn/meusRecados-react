@@ -12,6 +12,7 @@ const initialState: User[] = [
 		email: 'bruno@teste.com',
 		password: '123123',
 		avatar: 'https://avatars.githubusercontent.com/u/108753181?v=4',
+		role: 'admin'
 	},
 ];
 

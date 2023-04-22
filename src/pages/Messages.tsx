@@ -11,8 +11,8 @@ import { Message } from '../types/Message';
 
 const Messages: React.FC = () => {
 	const auth = useAppSelector((store) => store.auth);
-	const messages = useAppSelector(selectUserMessages(auth.user.id));
-
+	// const messages = useAppSelector(selectUserMessages(auth.user!.id));
+	const messages: Message[] = [];
 	function handleSearch() {}
 
 	return (

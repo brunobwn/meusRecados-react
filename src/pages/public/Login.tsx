@@ -9,17 +9,19 @@ import {
 } from '@mui/material';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { signIn } from '../../app/reducers/authSlice';
-import { Theme, ThemeProvider } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
 import { fontSecularOne } from '../../themes/themes';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { LoginSchema, TLoginSchema } from '../../types/Login';
 import { ContainerMotion } from '../../components/MotionMaterial';
 import { BoxWrapperCss, ContainerFormCss, HeaderFormCss } from './styles';
+import { login } from '../../app/reducers/authSlice';
+import { AppDispatch } from '../../app/store';
+import { useEffect } from 'react';
 
 const Login: React.FC = () => {
-	const dispatch = useAppDispatch();
+	const dispatch:AppDispatch = useAppDispatch();
 	const {
 		register,
 		handleSubmit,
@@ -27,23 +29,16 @@ const Login: React.FC = () => {
 	} = useForm<TLoginSchema>({
 		resolver: zodResolver(LoginSchema),
 	});
-	const users = useAppSelector((state) => state.users);
+	const auth = useAppSelector((store) => store.auth);
 	const navigate = useNavigate();
 
-	async function handleLogin({ email, password }: TLoginSchema) {
-		const user = users.find((user) => user.email === email);
-		if (user) {
-			if (user.password === password) {
-				const { password, ...authUser } = user;
-				dispatch(signIn(authUser));
-				navigate('/');
-			} else {
-				alert('senha errada');
-			}
-		} else {
-			alert('email errado');
-		}
+	function handleLogin({ email, password }: TLoginSchema) {
+		dispatch(login({email, password}));
 	}
+
+	useEffect(()=>{
+		if(auth.user && auth.token) navigate('/');
+	}, [auth.user]);
 	return (
 		<Box sx={BoxWrapperCss}>
 			<ContainerMotion
@@ -66,6 +61,7 @@ const Login: React.FC = () => {
 				</Box>
 				<form onSubmit={handleSubmit(handleLogin)}>
 					<Stack gap={3} sx={{ paddingX: 2 }}>
+						{ auth.error && <Typography variant="body2" align="center" color="error">{ auth.error }</Typography> }
 						<TextField
 							type="text"
 							label="E-mail"
@@ -89,9 +85,9 @@ const Login: React.FC = () => {
 							variant="contained"
 							type="submit"
 							size="large"
-							disabled={isSubmitting}
+							disabled={(isSubmitting || auth.loading)}
 						>
-							{isSubmitting ? (
+							{(isSubmitting || auth.loading) ? (
 								<CircularProgress thickness={3} size="1.6rem" />
 							) : (
 								'Entrar'

@@ -6,7 +6,7 @@ export const LoginSchema = z.object({
 		.email('Insira um e-mail válido'),
 	password: z
 		.string({ required_error: 'Campo obrigatório' })
-		.min(5, 'A senha deve conter no mínimo 5 caracteres'),
+		.min(6, 'A senha deve conter no mínimo 5 caracteres'),
 });
 
 export type TLoginSchema = z.infer<typeof LoginSchema>;
