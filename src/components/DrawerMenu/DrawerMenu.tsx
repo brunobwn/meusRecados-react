@@ -8,26 +8,26 @@ import {
 	List,
 } from '@mui/material';
 import { styled, Theme, CSSObject, useTheme } from '@mui/material/styles';
-import { HomeOutlined } from '@mui/icons-material';
+import { HomeOutlined, AdminPanelSettingsOutlined, MessageOutlined } from '@mui/icons-material';
 import CreateIcon from '@mui/icons-material/Create';
 import { DrawerHeader, drawerWidth } from '../../layouts/AppLayout';
 
 const data = [
 	{
-		name: 'Home',
+		name: 'WIP',
 		icon: <HomeOutlined />,
 	},
 	{
-		name: 'Novo recado',
+		name: 'WIP',
+		icon: <MessageOutlined />,
+	},
+	{
+		name: 'WIP',
 		icon: <CreateIcon />,
 	},
 	{
-		name: 'Home 3',
-		icon: <HomeOutlined />,
-	},
-	{
-		name: 'Home 4',
-		icon: <HomeOutlined />,
+		name: 'WIP',
+		icon: <AdminPanelSettingsOutlined />,
 	},
 ];
 
