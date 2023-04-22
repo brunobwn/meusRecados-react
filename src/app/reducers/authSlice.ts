@@ -46,6 +46,10 @@ export const authSlice = createSlice({
 			state.loading = false;
 			state.error = action.payload;
 		},
+		logout(state: AuthState) {
+			state.token = null;
+			state.user = null;
+		}
 	},
 	extraReducers: ({addCase}) => {
 		addCase(login.fulfilled, () => {});
