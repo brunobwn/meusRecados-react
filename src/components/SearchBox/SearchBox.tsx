@@ -33,14 +33,14 @@ const SearchBox = () => {
 				}}
 				sx={{ flexGrow: 1 }}
 			/>
-			<TextField
+			{/* <TextField
 				type="date"
 				color="secondary"
 				size="small"
 				label="Até a data"
 				id="searchDateMessage"
 				focused
-			/>
+			/> */}
 			<FormControl color="secondary" sx={{ minWidth: ['100%', 200] }} focused>
 				<InputLabel id="searchStatusMessage-label">Status</InputLabel>
 				<Select
@@ -52,10 +52,13 @@ const SearchBox = () => {
 					size="small"
 				>
 					<MenuItem value={10}>Todos</MenuItem>
-					<MenuItem value={20}>Completado</MenuItem>
-					<MenuItem value={30}>Em andamento</MenuItem>
+					<MenuItem value={20}>Ativo</MenuItem>
+					<MenuItem value={30}>Arquivado</MenuItem>
 				</Select>
 			</FormControl>
+			<Button color="secondary" variant="outlined" sx={{ flexGrow: 0.5 }}>
+				Limpar filtros
+			</Button>
 			<Button color="secondary" variant="contained" sx={{ flexGrow: 0.5 }}>
 				Buscar
 			</Button>
