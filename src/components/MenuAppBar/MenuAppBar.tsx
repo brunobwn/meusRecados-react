@@ -14,6 +14,7 @@ import { styled, Theme, ThemeProvider, useTheme } from '@mui/material/styles';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { fontSecularOne } from '../../themes/themes';
 import { RootState } from '../../app/store';
+import { logout } from '../../app/reducers/authSlice';
 
 interface MenuAppBarProps {
 	toggleDrawer: () => void;
@@ -94,7 +95,7 @@ export default function MenuAppBar({ toggleDrawer }: MenuAppBarProps) {
 						onClose={handleClose}
 					>
 						<MenuItem onClick={handleClose}>Minha conta</MenuItem>
-						{/* <MenuItem onClick={() => dispatch(logout())}>Logout</MenuItem> */}
+						<MenuItem onClick={() => dispatch(logout())}>Logout</MenuItem>
 					</Menu>
 				</div>
 			</Toolbar>

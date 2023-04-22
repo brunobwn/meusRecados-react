@@ -6,10 +6,10 @@ import {
 import { User } from '../../types/User';
 import api from '../../service/ApiService';
 import { TLoginSchema } from '../../types/Login';
+import { TSignUpSchema } from '../../types/SignUp';
 
 type UserAuth = Omit<User, 'password'>;
-type Auth = { user: UserAuth; isAuthenticated: boolean };
-
+type RegisterSchema = Omit<TSignUpSchema, 'passwordConfirm'>;
 interface AuthState {
 	token: string | null;
 	loading: boolean;
@@ -49,15 +49,30 @@ export const authSlice = createSlice({
 		logout(state: AuthState) {
 			state.token = null;
 			state.user = null;
-		}
+		},
+		registerRequest(state: AuthState) {
+			state.loading = true;
+			state.error = null;
+		},
+		registerSuccess(state: AuthState, action: PayloadAction<LoginSuccessPayload>) {
+			state.loading = false;
+			state.token = action.payload.token;
+			state.user = action.payload.user;
+			state.error = null;
+		},
+		registerFailure(state: AuthState, action: PayloadAction<string>) {
+			state.loading = false;
+			state.error = action.payload;
+		},
 	},
 	extraReducers: ({addCase}) => {
 		addCase(login.fulfilled, () => {});
+		addCase(registerAuth.fulfilled, () => {});
 	}
 });
 
 // Action creators are generated for each case reducer function
-export const { loginRequest, loginSuccess, loginFailure } = authSlice.actions;
+export const { loginRequest, loginSuccess, loginFailure, logout, registerRequest, registerSuccess, registerFailure } = authSlice.actions;
 
 export const login = createAsyncThunk(
 	'login/post',
@@ -68,6 +83,25 @@ export const login = createAsyncThunk(
 		}).catch(({response}) => {
 			if(response.status !== 200) {
 				dispatch(loginFailure(response.data.message));
+			}
+		});
+		return;
+	}
+);
+
+export const registerAuth = createAsyncThunk(
+	'register/post',
+	async ({ name, email, password, avatar }: RegisterSchema, { dispatch }) => {
+		dispatch(registerRequest());
+		api.register(name, email, password, avatar).then((response) => {
+			dispatch(registerSuccess(response.data));
+		}).catch(({response}) => {
+			if(response.status !== 201) {
+				if(response.data.message) {
+					dispatch(registerFailure(response.data.message));
+				} else {
+					dispatch(registerFailure('Não foi possível realizar o cadastro'));
+				}
 			}
 		});
 		return;

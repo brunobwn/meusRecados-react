@@ -15,6 +15,10 @@ class ApiService {
     async login(email:string, password: string): Promise<AxiosResponse>{
         return this.axiosInstance.post('auth/login', {email, password});
     }
+
+    async register(name:string, email:string, password: string, avatar?:string): Promise<AxiosResponse>{
+        return this.axiosInstance.post('auth/register', {name, email, password, avatar});
+    }
 }
 
 const api = new ApiService();

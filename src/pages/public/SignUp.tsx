@@ -1,6 +1,5 @@
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { addUser } from '../../app/reducers/usersSlice';
 import { SignUpSchema, TSignUpSchema } from '../../types/SignUp';
 import { useForm } from 'react-hook-form';
 import {
@@ -17,9 +16,12 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { ContainerMotion } from '../../components/MotionMaterial';
 import { BoxWrapperCss, ContainerFormCss, HeaderFormCss } from './styles';
 import { fontSecularOne } from '../../themes/themes';
+import { AppDispatch } from '../../app/store';
+import { registerAuth } from '../../app/reducers/authSlice';
+import { useEffect } from 'react';
 
 const SignUp: React.FC = () => {
-	const dispatch = useAppDispatch();
+	const dispatch:AppDispatch = useAppDispatch();
 	const {
 		register,
 		handleSubmit,
@@ -27,24 +29,16 @@ const SignUp: React.FC = () => {
 	} = useForm<TSignUpSchema>({
 		resolver: zodResolver(SignUpSchema),
 	});
-	const users = useAppSelector((state) => state.users);
+	const auth = useAppSelector((store) => store.auth);
 	const navigate = useNavigate();
 
-	function handleSignUp({ name, email, password, avatar }: TSignUpSchema) {
-		const user = users.find((user) => user.email === email);
-		if (!user) {
-			const newUser = {
-				name,
-				email,
-				password,
-				avatar,
-			};
-			dispatch(addUser(newUser));
-			navigate('/');
-		} else {
-			alert('Já existe um usuário com este e-mail');
-		}
+	function handleSignUp({ name, email, password, avatar}: TSignUpSchema) {
+		dispatch(registerAuth({name, email, password, avatar: avatar || undefined}));
 	}
+
+	useEffect(()=>{
+		if(auth.user && auth.token) navigate('/');
+	}, [auth.user]);
 	return (
 		<Box sx={BoxWrapperCss}>
 			<ContainerMotion
@@ -67,6 +61,7 @@ const SignUp: React.FC = () => {
 				</Box>
 				<form onSubmit={handleSubmit(handleSignUp)}>
 					<Stack gap={3} sx={{ paddingX: 2 }}>
+					{ auth.error && <Typography variant="body2" align="center" color="error">{ auth.error }</Typography> }
 						<TextField
 							type="text"
 							label="Nome"
@@ -117,9 +112,9 @@ const SignUp: React.FC = () => {
 							variant="contained"
 							type="submit"
 							size="large"
-							disabled={isSubmitting}
+							disabled={isSubmitting || auth.loading}
 						>
-							{isSubmitting ? (
+							{(isSubmitting || auth.loading) ? (
 								<CircularProgress thickness={3} size="1.6rem" />
 							) : (
 								'Cadastrar'

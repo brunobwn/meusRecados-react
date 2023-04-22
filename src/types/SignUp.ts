@@ -11,10 +11,12 @@ export const SignUpSchema = z
 		avatar: z.string().optional(),
 		password: z
 			.string({ required_error: 'Campo obrigatório' })
-			.min(5, 'A senha deve conter no mínimo 5 caracteres'),
+			.min(6, 'A senha deve conter no mínimo 6 caracteres')
+			.regex(/^(?=.*[A-Za-z])(?=.*\d).+$/, 'A senha deve conter letras e números'),
 		passwordConfirm: z
 			.string({ required_error: 'Campo obrigatório' })
-			.min(5, 'A senha deve conter no mínimo 5 caracteres'),
+			.min(6, 'A senha deve conter no mínimo 6 caracteres')
+			.regex(/^(?=.*[A-Za-z])(?=.*\d).+$/, 'A senha deve conter letras e números'),
 	})
 	.refine((data) => data.password === data.passwordConfirm, {
 		message: 'As senhas não conferem',
