@@ -27,7 +27,12 @@ class ApiService {
 
     async getAllMessages(): Promise<AxiosResponse> {
         if(!this.userId) return Promise.reject('Usuário não autenticado');
-        return this.axiosInstance.get(`user/${this.userId}/messages`);
+        return this.axiosInstance.get(`user/${this.userId}/messages`, {params: {active: true}});
+    }
+
+    async getFiltredMessages({search, active}:{search:string | null, active:boolean | null}): Promise<AxiosResponse> {
+        if(!this.userId) return Promise.reject('Usuário não autenticado');
+        return this.axiosInstance.get(`user/${this.userId}/messages`, {params: {search, active}});
     }
 
     async createMessage(message:{subject:string, text:string}): Promise<AxiosResponse>{
@@ -42,7 +47,7 @@ class ApiService {
 
     async toggleStatusMessage(messageId:string): Promise<AxiosResponse>{
         if(!this.userId) return Promise.reject('Usuário não autenticado');
-        return this.axiosInstance.patch(`user/${this.userId}/messages/${messageId}`);
+        return this.axiosInstance.patch(`user/${this.userId}/messages/${messageId}/toggle`);
     }
 
     setUser(user:UserAuth | null | undefined, token: string | null | undefined): void {

@@ -1,8 +1,8 @@
 import { useRef, useState } from 'react';
-import { Box, Typography, Stack, Button, makeStyles } from '@mui/material';
+import { Box, Typography, Stack, Button } from '@mui/material';
 import { ContentCardCSS } from './style';
 import { toggleStatusMessage, updateMessage } from '../../app/reducers/messagesSlice';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { useAppDispatch } from '../../app/hooks';
 import { Message } from '../../types/Message';
 import { format } from 'date-fns';
 import api from '../../service/ApiService';

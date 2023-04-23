@@ -10,8 +10,45 @@ import {
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import api from '../../service/ApiService';
+import { setMessages } from '../../app/reducers/messagesSlice';
+import { useAppDispatch } from '../../app/hooks';
+import { useState } from 'react';
 
 const SearchBox = () => {
+	const dispatch = useAppDispatch();
+	const [statusSearch, setStatusSearch] = useState<number>(1);
+	const [searchText, setSearchText] = useState<string>('');
+	
+	function handleResetSearch() {
+		setStatusSearch(1);
+		setSearchText('');
+		handleSearch();
+	}
+
+	async function handleSearch() {
+		let active;
+		switch (statusSearch) {
+			case 1:
+				active = true;
+				break;
+			case 2:
+				active = false;
+				break;
+			default:
+				active = null;
+				break;
+		}
+		api
+			.getFiltredMessages({ search: searchText, active })
+			.then((res) => res.data)
+			.then((data) => {
+				dispatch(setMessages(Object.values(data)));
+			})
+			.catch(({ response }) => {
+				// console.log(response);
+			});
+	}
 	return (
 		<Stack
 			direction={{ sm: 'column', md: 'row' }}
@@ -32,6 +69,8 @@ const SearchBox = () => {
 					),
 				}}
 				sx={{ flexGrow: 1 }}
+				onChange={(e) => setSearchText(e.target.value)}
+				value={searchText}
 			/>
 			{/* <TextField
 				type="date"
@@ -46,20 +85,21 @@ const SearchBox = () => {
 				<Select
 					labelId="searchStatusMessage-label"
 					id="searchStatusMessage"
-					value={10}
 					label="Status"
 					color="secondary"
 					size="small"
+					onChange={(e) => setStatusSearch(Number(e.target.value))}
+					value={statusSearch}
 				>
-					<MenuItem value={10}>Todos</MenuItem>
-					<MenuItem value={20}>Ativo</MenuItem>
-					<MenuItem value={30}>Arquivado</MenuItem>
+					<MenuItem value={0}>Todos</MenuItem>
+					<MenuItem value={1}>Ativo</MenuItem>
+					<MenuItem value={2}>Arquivado</MenuItem>
 				</Select>
 			</FormControl>
-			<Button color="secondary" variant="outlined" sx={{ flexGrow: 0.5 }}>
+			<Button color="secondary" variant="outlined" sx={{ flexGrow: 0.5 }} onClick={handleResetSearch}>
 				Limpar filtros
 			</Button>
-			<Button color="secondary" variant="contained" sx={{ flexGrow: 0.5 }}>
+			<Button color="secondary" variant="contained" sx={{ flexGrow: 0.5 }} onClick={handleSearch}>
 				Buscar
 			</Button>
 		</Stack>

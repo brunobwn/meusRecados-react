@@ -13,7 +13,6 @@ import api from '../service/ApiService';
 const Messages: React.FC = () => {
 	const dispatch = useAppDispatch();
 	const messages: Message[] = useAppSelector((store) => store.messages);
-	function handleSearch() {}
 
 	useEffect(() => {
 		api.getAllMessages().then(res => res.data).then(data => {
