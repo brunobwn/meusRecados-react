@@ -5,7 +5,7 @@ import { UserAuth } from '../app/reducers/authSlice';
 class ApiService {
 
     private axiosInstance = axios.create({
-        baseURL: 'http://localhost:8080/',
+        baseURL: import.meta.env.REACT_APP_API_ADDRESS || 'http://localhost:8080/',
         headers: {
             "Content-type": "application/json"
         }
