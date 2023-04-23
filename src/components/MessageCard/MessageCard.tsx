@@ -58,6 +58,7 @@ const MessageCard = ({ data }: MessageCardProps) => {
 				variant="h6"
 				component="div"
 				contentEditable={isEditing}
+				suppressContentEditableWarning={true}
 				ref={subjectRef}
 			>
 				{subject}
@@ -67,6 +68,7 @@ const MessageCard = ({ data }: MessageCardProps) => {
 				component="div"
 				sx={{ flexGrow: 1, overflowY: 'auto' }}
 				contentEditable={isEditing}
+				suppressContentEditableWarning={true}
 				ref={textRef}
 			>
 				{text}
