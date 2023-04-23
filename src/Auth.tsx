@@ -10,12 +10,14 @@ interface AuthProps {
 const Auth: React.FC<AuthProps> = ({ page }) => {
 	const { user, token } = useAppSelector((state) => state.auth);
 
-	if (!user && !token) {
-		return <Navigate to="/login" />;
-	}
 	useEffect(() => {
 		api.setUser(user, token);
 	}, [token, user]);
+
+	if (!token || !user) {
+		return <Navigate to="/login" />;
+	}
+
 	return <React.Fragment>{page}</React.Fragment>;
 };
 
