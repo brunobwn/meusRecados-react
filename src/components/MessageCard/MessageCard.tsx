@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { Box, Typography, Stack, Button } from '@mui/material';
+import { Box, Typography, Stack, Button, makeStyles } from '@mui/material';
 import { ContentCardCSS } from './style';
 import { toggleStatusMessage, updateMessage } from '../../app/reducers/messagesSlice';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
@@ -53,7 +53,7 @@ const MessageCard = ({ data }: MessageCardProps) => {
 	}
 
 	return (
-		<Box sx={ContentCardCSS}>
+		<Box sx={[ContentCardCSS, !is_active && {opacity: 0.5}]}>
 			<Typography
 				variant="h6"
 				component="div"
