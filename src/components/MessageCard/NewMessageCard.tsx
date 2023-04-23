@@ -86,6 +86,7 @@ const NewMessageCard: React.FC = () => {
 				ref={subjectRef}
 				onClick={() => handleFirstClick('subject')}
 				onBlur={() => handleBlur('subject')}
+				suppressContentEditableWarning={true}
 			>
 				Digite um título
 			</Typography>
@@ -97,6 +98,7 @@ const NewMessageCard: React.FC = () => {
 				ref={textRef}
 				onClick={() => handleFirstClick('text')}
 				onBlur={() => handleBlur('text')}
+				suppressContentEditableWarning={true}
 			>
 				E uma mensagem
 			</Typography>
