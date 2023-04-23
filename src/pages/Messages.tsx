@@ -1,20 +1,27 @@
 import { Container, Grid, Typography } from '@mui/material';
-import React from 'react';
-import { useAppSelector } from '../app/hooks';
-import { selectUserMessages } from '../app/reducers/messagesSlice';
+import React, { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
+import { setMessages } from '../app/reducers/messagesSlice';
 import { ContainerCardCSS } from '../components/MessageCard/style';
 import SearchBox from '../components/SearchBox/SearchBox';
 import NewMessageCard from '../components/MessageCard/NewMessageCard';
 import MessageCard from '../components/MessageCard/MessageCard';
 import { GridMotion } from '../components/MotionMaterial';
 import { Message } from '../types/Message';
+import api from '../service/ApiService';
 
 const Messages: React.FC = () => {
-	const auth = useAppSelector((store) => store.auth);
-	// const messages = useAppSelector(selectUserMessages(auth.user!.id));
-	const messages: Message[] = [];
+	const dispatch = useAppDispatch();
+	const messages: Message[] = useAppSelector((store) => store.messages);
 	function handleSearch() {}
 
+	useEffect(() => {
+		api.getAllMessages().then(res => res.data).then(data => {
+			dispatch(setMessages(Object.values(data)));
+		}).catch(({response}) => {
+			console.log(response);
+		});
+	}, []);
 	return (
 		<Container>
 			<Typography variant="h4" color="white" mt={2}>
@@ -25,7 +32,7 @@ const Messages: React.FC = () => {
 				<Grid item xs={12} sm={6} md={4} lg={3} sx={ContainerCardCSS}>
 					<NewMessageCard />
 				</Grid>
-				{messages.reverse().map((message: Message) => (
+				{messages.map((message: Message) => (
 					<GridMotion
 						item
 						xs={12}
@@ -37,7 +44,7 @@ const Messages: React.FC = () => {
 						animate={{ opacity: 1, scale: 1 }}
 						transition={{ type: 'spring', duration: 0.5 }}
 						exit={{ scale: 0, opacity: 0 }}
-						key={message.messageId}
+						key={message.id}
 					>
 						<MessageCard data={message} />
 					</GridMotion>

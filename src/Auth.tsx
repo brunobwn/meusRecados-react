@@ -14,12 +14,8 @@ const Auth: React.FC<AuthProps> = ({ page }) => {
 		return <Navigate to="/login" />;
 	}
 	useEffect(() => {
-		if(token) {
-			api.setToken(token);
-		} else {
-			api.resetToken();
-		}
-	}, [token]);
+		api.setUser(user, token);
+	}, [token, user]);
 	return <React.Fragment>{page}</React.Fragment>;
 };
 

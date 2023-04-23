@@ -1,11 +1,16 @@
 import axios, { AxiosResponse } from 'axios';
+import { User } from '../types/User';
+import { UserAuth } from '../app/reducers/authSlice';
 
 class ApiService {
 
     private axiosInstance = axios.create({
         baseURL: 'http://localhost:8080/',
+        headers: {
+            "Content-type": "application/json"
+        }
     });
-    
+    private userId: string | null = null;
     constructor() {}
     
     public get<T>(url: string, config?: any): Promise<T> {
@@ -20,16 +25,24 @@ class ApiService {
         return this.axiosInstance.post('auth/register', {name, email, password, avatar});
     }
 
-    async getAllMessages(userId:string): Promise<AxiosResponse>{
-        return this.axiosInstance.get(`user/${userId}/messages`);
+    async getAllMessages(): Promise<AxiosResponse> {
+        if(!this.userId) return Promise.reject('Usuário não autenticado');
+        return this.axiosInstance.get(`user/${this.userId}/messages`);
     }
 
-    setToken(token: string): void {
-        this.axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    async createMessage(message:{subject:string, text:string}): Promise<AxiosResponse>{
+        if(!this.userId) return Promise.reject('Usuário não autenticado');
+        return this.axiosInstance.post(`user/${this.userId}/messages`, message);
     }
 
-    resetToken(): void {
-        this.axiosInstance.defaults.headers.common['Authorization'] = '';
+    setUser(user:UserAuth | null | undefined, token: string | null | undefined): void {
+        if(token && user) {
+            this.axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+            this.userId = user.id;
+        } else {
+            this.axiosInstance.defaults.headers.common['Authorization'] = '';
+            this.userId = null;
+        }
     }
 }
 

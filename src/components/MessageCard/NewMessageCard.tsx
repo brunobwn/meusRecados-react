@@ -12,6 +12,7 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import { addMessage } from '../../app/reducers/messagesSlice';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import api from '../../service/ApiService';
 
 const NewMessageCard: React.FC = () => {
 	const [isActive, setActive] = useState(false);
@@ -55,7 +56,7 @@ const NewMessageCard: React.FC = () => {
 		setActive(false);
 	}
 
-	function handleSaveCard() {
+	async function handleSaveCard() {
 		if (
 			!subjectRef.current!.innerText ||
 			!textRef.current!.innerText ||
@@ -65,14 +66,15 @@ const NewMessageCard: React.FC = () => {
 			alert('todos os campos devem ser preenchidos');
 			return;
 		}
-		dispatch(
-			addMessage({
-				userId: auth.user.id,
-				subject: subjectRef.current!.innerText,
-				text: textRef.current!.innerText,
-				date: new Date(),
-			})
-		);
+		const newMessage = {
+			subject: subjectRef.current!.innerText,
+			text: textRef.current!.innerText,
+		};
+		const res = await api.createMessage(newMessage);
+		if (res.status != 201) {
+			console.log('erro ao criar mensagem');
+		}
+		dispatch(addMessage(res.data));
 		handleResetCard();
 	}
 	return isActive ? (

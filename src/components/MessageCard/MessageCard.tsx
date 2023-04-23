@@ -1,10 +1,7 @@
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { Box, Typography, Stack, Button } from '@mui/material';
 import { ContentCardCSS, newContentCardCSS } from './style';
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import AddBoxIcon from '@mui/icons-material/AddBox';
 import {
-	addMessage,
 	deleteMessage,
 	updateMessage,
 } from '../../app/reducers/messagesSlice';
@@ -23,14 +20,14 @@ const MessageCard = ({ data }: MessageCardProps) => {
 	const dispatch = useAppDispatch();
 	const auth = useAppSelector((store) => store.auth);
 
-	const { messageId, subject, text, date } = data;
+	const { id, subject, text, is_active, edited_at } = data;
 
 	const firstClick = { subject: true, text: true };
 
 	function handleDeleteCard() {
 		if (confirm('Confirme para excluir')) {
 			setActive(false);
-			dispatch(deleteMessage(messageId));
+			dispatch(deleteMessage(id));
 		} else {
 			setActive(false);
 		}
@@ -41,13 +38,13 @@ const MessageCard = ({ data }: MessageCardProps) => {
 			alert('todos os campos devem ser preenchidos');
 			return;
 		}
-		const editedMessage = {
-			messageId,
-			subject: subjectRef.current!.innerText,
-			text: textRef.current!.innerText,
-			date: new Date(),
-		};
-		dispatch(updateMessage(editedMessage));
+		// const editedMessage = {
+		// 	id,
+		// 	subject: subjectRef.current!.innerText,
+		// 	text: textRef.current!.innerText,
+		// 	date: new Date(),
+		// };
+		// dispatch(updateMessage(editedMessage));
 		setActive(false);
 	}
 
@@ -90,7 +87,7 @@ const MessageCard = ({ data }: MessageCardProps) => {
 							Editar
 						</Button>
 						<Typography variant="body2" alignSelf="center">
-							{format(new Date(date), 'dd-MM-yyyy')}
+							{/* {format(new Date(edited_at), 'dd-MM-yyyy')} */}
 						</Typography>
 					</>
 				)}

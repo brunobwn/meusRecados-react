@@ -8,7 +8,7 @@ import api from '../../service/ApiService';
 import { TLoginSchema } from '../../types/Login';
 import { TSignUpSchema } from '../../types/SignUp';
 
-type UserAuth = Omit<User, 'password'>;
+export type UserAuth = Omit<User, 'password'>;
 type RegisterSchema = Omit<TSignUpSchema, 'passwordConfirm'>;
 interface AuthState {
 	token: string | null;
