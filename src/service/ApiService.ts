@@ -35,6 +35,16 @@ class ApiService {
         return this.axiosInstance.post(`user/${this.userId}/messages`, message);
     }
 
+    async updateMessage({id, ...message}:{id:string, subject:string, text:string}): Promise<AxiosResponse>{
+        if(!this.userId) return Promise.reject('Usuário não autenticado');
+        return this.axiosInstance.patch(`user/${this.userId}/messages/${id}`, message);
+    }
+
+    async toggleStatusMessage(messageId:string): Promise<AxiosResponse>{
+        if(!this.userId) return Promise.reject('Usuário não autenticado');
+        return this.axiosInstance.patch(`user/${this.userId}/messages/${messageId}`);
+    }
+
     setUser(user:UserAuth | null | undefined, token: string | null | undefined): void {
         if(token && user) {
             this.axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;

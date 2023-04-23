@@ -19,7 +19,7 @@ const Messages: React.FC = () => {
 		api.getAllMessages().then(res => res.data).then(data => {
 			dispatch(setMessages(Object.values(data)));
 		}).catch(({response}) => {
-			console.log(response);
+			// console.log(response);
 		});
 	}, []);
 	return (

@@ -8,4 +8,4 @@ export type Message = {
 	edited_at: string;
 };
 
-export type EditedMessage = Omit<Message, 'userId'>;
+export type EditedMessage = Pick<Message, 'id' | 'subject' | 'text'>;

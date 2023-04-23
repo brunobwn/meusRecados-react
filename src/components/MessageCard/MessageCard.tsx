@@ -1,55 +1,55 @@
 import { useRef, useState } from 'react';
 import { Box, Typography, Stack, Button } from '@mui/material';
-import { ContentCardCSS, newContentCardCSS } from './style';
-import {
-	deleteMessage,
-	updateMessage,
-} from '../../app/reducers/messagesSlice';
+import { ContentCardCSS } from './style';
+import { toggleStatusMessage, updateMessage } from '../../app/reducers/messagesSlice';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { Message } from '../../types/Message';
 import { format } from 'date-fns';
+import api from '../../service/ApiService';
 
 interface MessageCardProps {
 	data: Message;
 }
 
 const MessageCard = ({ data }: MessageCardProps) => {
-	const [isActive, setActive] = useState(false);
+	const [isEditing, setEditing] = useState(false);
 	const subjectRef = useRef<HTMLDivElement>(null);
 	const textRef = useRef<HTMLDivElement>(null);
 	const dispatch = useAppDispatch();
-	const auth = useAppSelector((store) => store.auth);
 
 	const { id, subject, text, is_active, edited_at } = data;
 
 	const firstClick = { subject: true, text: true };
 
-	function handleDeleteCard() {
-		if (confirm('Confirme para excluir')) {
-			setActive(false);
-			dispatch(deleteMessage(id));
-		} else {
-			setActive(false);
+	async function handleToggleStatusMessage() {
+		const res = await api.toggleStatusMessage(id);
+		if (res.status != 204) {
+			console.log('erro ao trocar status mensagem');
 		}
+		setEditing(false);
+		dispatch(toggleStatusMessage(id));
 	}
 
-	function handleSaveCard() {
+	async function handleSaveCard() {
 		if (!subjectRef.current!.innerText || !textRef.current!.innerText) {
 			alert('todos os campos devem ser preenchidos');
 			return;
 		}
-		// const editedMessage = {
-		// 	id,
-		// 	subject: subjectRef.current!.innerText,
-		// 	text: textRef.current!.innerText,
-		// 	date: new Date(),
-		// };
-		// dispatch(updateMessage(editedMessage));
-		setActive(false);
+		const editedMessage = {
+			id,
+			subject: subjectRef.current!.innerText,
+			text: textRef.current!.innerText,
+		};
+		const res = await api.updateMessage(editedMessage);
+		if (res.status != 204) {
+			console.log('erro ao atualizar mensagem');
+		}
+		dispatch(updateMessage(editedMessage));
+		setEditing(false);
 	}
 
 	function handleEditClick() {
-		setActive(true);
+		setEditing(true);
 	}
 
 	return (
@@ -57,7 +57,7 @@ const MessageCard = ({ data }: MessageCardProps) => {
 			<Typography
 				variant="h6"
 				component="div"
-				contentEditable={isActive}
+				contentEditable={isEditing}
 				ref={subjectRef}
 			>
 				{subject}
@@ -66,16 +66,16 @@ const MessageCard = ({ data }: MessageCardProps) => {
 				variant="body1"
 				component="div"
 				sx={{ flexGrow: 1, overflowY: 'auto' }}
-				contentEditable={isActive}
+				contentEditable={isEditing}
 				ref={textRef}
 			>
 				{text}
 			</Typography>
 			<Stack direction="row" justifyContent="space-between">
-				{isActive ? (
+				{isEditing ? (
 					<>
-						<Button color="error" onClick={handleDeleteCard}>
-							Deletar
+						<Button color="error" onClick={handleToggleStatusMessage}>
+							{is_active ? 'Arquivar' : 'Desarquivar'}
 						</Button>
 						<Button color="success" onClick={handleSaveCard}>
 							Salvar
@@ -87,7 +87,7 @@ const MessageCard = ({ data }: MessageCardProps) => {
 							Editar
 						</Button>
 						<Typography variant="body2" alignSelf="center">
-							{/* {format(new Date(edited_at), 'dd-MM-yyyy')} */}
+							{format(new Date(edited_at), 'dd-MM-yyyy')}
 						</Typography>
 					</>
 				)}
